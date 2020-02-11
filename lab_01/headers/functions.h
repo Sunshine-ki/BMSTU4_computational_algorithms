@@ -11,10 +11,12 @@
 
 int fill_matrix(FILE *f, double matrix[MAX_LEN][MAX_LEN], int n);
 
+void func(double matrix[MAX_LEN][MAX_LEN], int n, int m, int index[2]);
+
 void print_matrix(FILE *f, double matrix[MAX_LEN][MAX_LEN], int n, int m);
 
-int find_insert(double matrix[MAX_LEN][MAX_LEN], int row, double x, int index[2], int n);
+void Newton_polynomial(double matrix[MAX_LEN][MAX_LEN], int row, int n, int index[2], double x);
 
-void func(double matrix[MAX_LEN][MAX_LEN], int n, int m, int index[2]);
+int find_insert(double matrix[MAX_LEN][MAX_LEN], int row, double x, int index[2], int n);
 
 #endif

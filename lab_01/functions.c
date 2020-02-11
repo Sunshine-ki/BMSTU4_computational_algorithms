@@ -72,18 +72,35 @@ int find_insert(double matrix[MAX_LEN][MAX_LEN], int row, double x, int index[2]
 void func(double matrix[MAX_LEN][MAX_LEN], int n, int m, int index[2])
 {
     m += 2;
-    int s = index[1];
-    printf("\nИндексы: %d %d\n", index[0], index[1]);
+    // printf("\nИндексы: %d %d\n", index[0], index[1]);
     for (int j = 2, k = 1; j < m; j++, k++)
     {
-        for (int i = index[0]; i < s; i++)
+        for (int i = index[0]; i < index[1]; i++)
         {
-
             matrix[i][j] = (matrix[i][j - 1] - matrix[i + 1][j - 1]) / (matrix[i][0] - matrix[i + k][0]);
-            fprintf(stdout, "%lf ", matrix[i][0] - matrix[i + 1][0]);
         }
-        s--;
-
-        fprintf(stdout, "\n");
+        index[1]--;
     }
+    // printf("\nИндексы: %d %d\n", index[0], index[1]);
+}
+
+void Newton_polynomial(double matrix[MAX_LEN][MAX_LEN], int row, int n, int index[2], double x)
+{
+    puts("");
+    double result = matrix[1][index[0]], current = 1;
+    // printf("result = %f\n", result);
+    // printf("%lf ", matrix[0][0]);
+    // printf("%lf ", matrix[0][1]);
+    // printf("%lf ", matrix[0][2]);
+    // printf("%lf \n", matrix[0][3]);
+
+    for (int i = 0; i < n; i++)
+    {
+        // printf("%lf * %lf\n", matrix[index[0] + i][0], matrix[index[0]][index[0] + i + 1]);
+        current *= (x - matrix[index[0] + i][0]);
+        printf("%lf \n", current);
+
+        result += current * matrix[index[0]][index[0] + i + 1];
+    }
+    printf("result = %f\n", result);
 }

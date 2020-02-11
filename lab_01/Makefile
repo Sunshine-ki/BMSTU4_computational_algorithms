@@ -14,4 +14,4 @@ clean:
 	rm -f *.o *.exe functions/*.o
 
 run:
-	./app.exe table/table.txt < in.txt
+	./app.exe table/table2.txt < in.txt

@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
         return ERROR_FIND;
     }
     func(matrix, row, n, index);
+    Newton_polynomial(matrix, row, n, index, x);
     print_matrix(stdout, matrix, row, n);
 
     fclose(f);
