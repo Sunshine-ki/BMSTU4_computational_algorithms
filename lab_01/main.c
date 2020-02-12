@@ -17,13 +17,17 @@ int main(int argc, char *argv[])
     scanf("%lf", &x);
 
     int row = fill_matrix(f, matrix, n);
-    if (find_insert(matrix, row, x, index, n))
+    int err = find_insert(matrix, row, x, index, n);
+    if (err)
     {
-        return ERROR_FIND;
+        return err;
     }
     func(matrix, row, n, index);
-    Newton_polynomial(matrix, row, n, index, x);
-    print_matrix(stdout, matrix, row, n);
+
+    double result = Newton_polynomial(matrix, row, n, index, x);
+    printf("result: y = %f\n", result);
+
+    // print_matrix(stdout, matrix, row, n);
 
     fclose(f);
     return OK;

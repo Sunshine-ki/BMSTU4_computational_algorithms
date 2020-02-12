@@ -1,4 +1,4 @@
-CFLAGS := -std=c99
+CFLAGS := -std=c99 -lm
 FILE_O :=  functions.o
 HEADERS_DIR := headers/
 
