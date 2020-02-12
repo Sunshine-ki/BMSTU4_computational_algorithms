@@ -134,20 +134,25 @@ double Newton_polynomial(double matrix[MAX_LEN][MAX_LEN], int row, int n, int in
 {
     puts("");
     // Результату присваиваем y0. Current - это текущий член суммы.
-    double result = matrix[1][index[0]], current = 1;
+    double result = matrix[index[0]][1], current = 1;
+
+    printf("Res (до) = %lf\n", result);
 
     for (int i = 0; i < n; i++)
     {
+        // printf("index = %d\n ", index[0]);
         // printf("%lf * %lf\n", matrix[index[0] + i][0], matrix[index[0]][index[0] + i + 1]);
         // Current умножаем на x - следующий x.
         // Т.е. итерируясь первый раз current = (х - х0).
         // Второй раз current = (х - х0) * (х - х1). и тд...
         current *= (x - matrix[index[0] + i][0]);
-        // printf("current %lf = %lf - %lf\n", current, x, matrix[index[0] + i][0]);
+        // printf("current = %lf * ", current);
+        // printf("index = %d %d %lf\n ", index[0], i + 2, matrix[index[0]][i + 2]);
 
         // Результату каждый раз прибавляется current и y(x0, ... , xi).
-        result += current * matrix[index[0]][index[0] + i + 1];
+        result += current * matrix[index[0]][i + 2];
     }
+    printf("Res = %lf\n", result);
 
     return result;
 }

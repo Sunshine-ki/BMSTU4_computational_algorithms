@@ -4,6 +4,7 @@
 
 #define OK 0
 
+// table3 - y = x.
 int main(int argc, char *argv[])
 {
     FILE *f = fopen(argv[1], MODE_READ);
@@ -27,7 +28,7 @@ int main(int argc, char *argv[])
     double result = Newton_polynomial(matrix, row, n, index, x);
     printf("result: y = %f\n", result);
 
-    // print_matrix(stdout, matrix, row, n);
+    print_matrix(stdout, matrix, row, n);
 
     fclose(f);
     return OK;

@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#define MAX_LEN 10
+#define MAX_LEN 32
 #define MODE_READ "r"
 #define OK 0
 #define ERROR_FIND -1
