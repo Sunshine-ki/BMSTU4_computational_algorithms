@@ -7,7 +7,7 @@
 
 #include "define.h"
 
-double f(double z);
+double f(double x);
 
 double method_division(double a, double b);
 

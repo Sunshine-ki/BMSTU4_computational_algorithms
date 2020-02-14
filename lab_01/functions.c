@@ -158,9 +158,9 @@ double Newton_polynomial(double matrix[MAX_LEN][MAX_LEN], int row, int n, int in
     return result;
 }
 
-double f(double z)
+double f(double x)
 {
-    return (z - 3) * (z + 7);
+    return (x - 3) * (x + 3);
 }
 
 double method_division(double a, double b)
@@ -175,7 +175,7 @@ double method_division(double a, double b)
         printf("result = %lf %lf\n", b, f(b));
         return b;
     }
-    if (a * b > 0)
+    if (f(a) * f(b) > 0)
     {
         printf("Нет корня\n");
         return 0;
@@ -186,20 +186,16 @@ double method_division(double a, double b)
         return 0;
     }
 
-    double x, c = (a + b) / 2;
+    double x, c = (a + b) / 2.0;
 
     while (fabs(a - b) >= EPS)
     {
-        if (f(a) * f(c) < 0)
+        if (f(a) * f(c) <= 0)
             b = c;
-        else if (f(c) * f(b) < 0)
-            a = c;
         else
-        {
-            printf("Не найден корень\n");
-            return 0;
-        }
-        c = (a + b) / 2;
+            a = c;
+
+        c = (a + b) / 2.0;
     }
 
     x = (a + b) / 2;

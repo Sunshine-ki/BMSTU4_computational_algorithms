@@ -15,7 +15,6 @@
 // Функции.
 // #define FUNC(x) x;
 // #define FUNC(x) cos(PI / 2 * x)
-// #define FUNC(x) cos(x)
-#define FUNC(x) sin(x)
+#define FUNC(x) cos(x)
 
 #endif

@@ -15,10 +15,10 @@ bin/%.o: %.c
 test: test.c
 	gcc test.c -o test -lm
 	./test
+	rm -f test
 
 run:
 	./app.exe table/test.txt
 
 clean:
-	rm -f *.o *.exe *.out functions/*.o test
-	rm -r -f bin
+	rm -f *.o *.exe *.out functions/*.o test -r bin
