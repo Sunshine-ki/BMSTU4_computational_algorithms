@@ -1,17 +1,24 @@
 CFLAGS := -std=c99 -lm
-FILE_O :=  functions.o
+FILE_O :=  bin/main.o bin/functions.o
 HEADERS_DIR := headers/
 
 all: app.exe 
 
-app.exe: main.o $(FILE_O)
+app.exe: $(FILE_O)
 	gcc -o app.exe $^ $(CFLAGS)
 
-%.o: %.c
-	gcc -c -I $(HEADERS_DIR) $^ $(CFLAGS)
+bin/%.o: %.c
+	mkdir -p bin
+	gcc -c -I $(HEADERS_DIR) $^ -o $@ $(CFLAGS)
 
-clean:
-	rm -f *.o *.exe functions/*.o
+
+test: test.c
+	gcc test.c -o test -lm
+	./test
 
 run:
-	./app.exe table/table3.txt < in.txt
+	./app.exe table/test.txt
+
+clean:
+	rm -f *.o *.exe *.out functions/*.o test
+	rm -r -f bin

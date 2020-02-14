@@ -5,12 +5,11 @@
 #include <stdio.h>
 #include <math.h>
 
-#define MAX_LEN 32
-#define MODE_READ "r"
-#define OK 0
-#define ERROR_FIND -1
-#define EPS 1e-4
-#define FOUND 1
+#include "define.h"
+
+double f(double z);
+
+double method_division(double a, double b);
 
 int fill_matrix(FILE *f, double matrix[MAX_LEN][MAX_LEN], int n);
 

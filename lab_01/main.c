@@ -1,35 +1,67 @@
 #include <stdio.h>
 
-#include "headers/functions.h"
+#include "functions.h"
+#include "define.h"
+#include "colors.h"
 
-#define OK 0
-
-// table3 - y = x.
+// table - y = x.
+// table2 - y = cos(pi/2x) (Из лекции).
+// table3 - cos(x)
+// table4 - cos(x) reverse.
+// table5 - y = i * i + 8 * i + 12; (-2 и -6)
+// table5 - y = i * i + 8 * i + 12; (-2 и -6) (reverse (y x))
 int main(int argc, char *argv[])
 {
+
     FILE *f = fopen(argv[1], MODE_READ);
     double matrix[MAX_LEN][MAX_LEN], x;
     int n;
     int index[2];
 
+    yellow();
     printf("Введите степень: ");
-    scanf("%d", &n);
+    int rc = scanf("%d", &n);
+    if (!rc)
+    {
+        printf("Некорректный ввод.");
+        return ERROR_INPUT;
+    }
     printf("Введите x: ");
-    scanf("%lf", &x);
+    rc = scanf("%lf", &x);
+    if (!rc)
+    {
+        printf("Некорректный ввод.");
+        return ERROR_INPUT;
+    }
+
+    white();
 
     int row = fill_matrix(f, matrix, n);
     int err = find_insert(matrix, row, x, index, n);
-    if (err)
+
+    if (err == FOUND)
+        return 0;
+    else if (err == ERROR_FIND)
     {
         return err;
     }
     func(matrix, row, n, index);
 
     double result = Newton_polynomial(matrix, row, n, index, x);
-    printf("result: y = %f\n", result);
 
-    print_matrix(stdout, matrix, row, n);
+    green();
+    printf("Результат интерполяции: y = %lf\n", result);
+    printf("Результат функции (Реальный) %lf\n", FUNC(x));
+    printf("Погрешность: %lf\n", fabs(result - FUNC(x)));
+    white();
+
+    // print_matrix(stdout, matrix, row, n);
 
     fclose(f);
     return OK;
 }
+
+// double a, b;
+// printf("Введите a и b: ");
+// scanf("%lf %lf", &a, &b);
+// double res = method_division(a, b);

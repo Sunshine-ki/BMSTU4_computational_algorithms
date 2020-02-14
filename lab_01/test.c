@@ -1,23 +1,24 @@
 #include <stdio.h>
 #include <math.h>
 
-#define PI 3.14159265358979323846
+#include "headers/define.h"
+
+#define START -1
+#define STOP 1
+#define STEP 0.25
 
 void fill_file()
 {
-    // FILE *f = fopen("test.txt", "w");
+    FILE *f = fopen("table/test.txt", "w");
 
-    // for (double i = -1; i <= 1; i += 0.25)
-    // {`
-    //     printf("%lf %lf \n", i, cos(PI / 2 * i));
-    // }
-    for (int i = -5; i < 5; i++)
-        printf("%d %d\n", i, i);
+    fprintf(f, "%d\n", (int)fabs(((STOP - START) / STEP + 1)));
+    for (double i = START; i <= STOP; i += STEP)
+        fprintf(f, "%f %f\n", i, FUNC(i));
 
-    // fclose(f);
+    fclose(f);
 }
 
-int main()
+void main()
 {
     fill_file();
 }

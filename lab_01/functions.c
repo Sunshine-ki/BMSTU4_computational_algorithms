@@ -41,6 +41,12 @@ void print_matrix(FILE *f, double matrix[MAX_LEN][MAX_LEN], int n, int m)
 // И выбирает узлы,близкие к х (кол-во n + 1).
 int find_insert(double matrix[MAX_LEN][MAX_LEN], int row, double x, int index[2], int n)
 {
+    if (n >= row)
+    {
+        index[0] = 0;
+        index[1] = row - 1;
+        return OK;
+    }
     // a и b - кол-во узлов, которые будут прибавляться к найденному интервалу.
     // k - итерационная переменная.
     int a, b, k;
@@ -74,11 +80,6 @@ int find_insert(double matrix[MAX_LEN][MAX_LEN], int row, double x, int index[2]
             index[0] = i - a;
             index[1] = i + b + 1;
 
-            // printf("x = %lf x - matrix[i][0] = %lf %d\n", x, fabs(x - matrix[i + 1][0]), fabs(x - matrix[i + 1][0]) < EPS);
-            // printf("Значения: %lf %lf\n", matrix[i][0], matrix[i + 1][0]);
-            // printf("\nИндексы ДО: %d %d\n", i, i + 1);
-            // printf("\na = %d b = %d\n", a, b);
-
             // Если у нас интервал стал меньше нуля
             // (Такого быть не может, птому что в матрице индексация больше 0),
             // То нижняя граница становится равная 0,
@@ -97,13 +98,12 @@ int find_insert(double matrix[MAX_LEN][MAX_LEN], int row, double x, int index[2]
                 index[0] -= index[1] - (row - 1);
                 index[1] = row - 1;
             }
-            // printf("row = %d\n", row);
-            printf("Индексы ПОСЛЕ: %d %d\n", index[0], index[1]);
-
+            // printf("Индексы ПОСЛЕ: %d %d\n", index[0], index[1]);
             return OK;
         }
     }
-    printf("Экстрополяция! (Выход за пределы)");
+
+    printf("Некорректные данные.\n");
     return ERROR_FIND;
 }
 
@@ -136,23 +136,74 @@ double Newton_polynomial(double matrix[MAX_LEN][MAX_LEN], int row, int n, int in
     // Результату присваиваем y0. Current - это текущий член суммы.
     double result = matrix[index[0]][1], current = 1;
 
-    printf("Res (до) = %lf\n", result);
+    // printf("Res (до) = %lf\n", result);
 
     for (int i = 0; i < n; i++)
     {
         // printf("index = %d\n ", index[0]);
         // printf("%lf * %lf\n", matrix[index[0] + i][0], matrix[index[0]][index[0] + i + 1]);
+
         // Current умножаем на x - следующий x.
         // Т.е. итерируясь первый раз current = (х - х0).
         // Второй раз current = (х - х0) * (х - х1). и тд...
         current *= (x - matrix[index[0] + i][0]);
+
         // printf("current = %lf * ", current);
         // printf("index = %d %d %lf\n ", index[0], i + 2, matrix[index[0]][i + 2]);
 
         // Результату каждый раз прибавляется current и y(x0, ... , xi).
         result += current * matrix[index[0]][i + 2];
     }
-    printf("Res = %lf\n", result);
 
     return result;
+}
+
+double f(double z)
+{
+    return (z - 3) * (z + 7);
+}
+
+double method_division(double a, double b)
+{
+    if (fabs(f(a)) <= EPS)
+    {
+        printf("result = %lf %lf\n", a, f(a));
+        return a;
+    }
+    else if (fabs(f(b)) <= EPS)
+    {
+        printf("result = %lf %lf\n", b, f(b));
+        return b;
+    }
+    if (a * b > 0)
+    {
+        printf("Нет корня\n");
+        return 0;
+    }
+    else if (fabs(a - b) < EPS)
+    {
+        printf("Не верные а и b\n");
+        return 0;
+    }
+
+    double x, c = (a + b) / 2;
+
+    while (fabs(a - b) >= EPS)
+    {
+        if (f(a) * f(c) < 0)
+            b = c;
+        else if (f(c) * f(b) < 0)
+            a = c;
+        else
+        {
+            printf("Не найден корень\n");
+            return 0;
+        }
+        c = (a + b) / 2;
+    }
+
+    x = (a + b) / 2;
+    printf("result = %lf %lf\n", x, f(x));
+
+    return x;
 }
