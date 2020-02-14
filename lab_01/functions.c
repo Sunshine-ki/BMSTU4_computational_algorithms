@@ -25,6 +25,16 @@ int fill_matrix(FILE *f, double matrix[MAX_LEN][MAX_LEN], int n)
     return row;
 }
 
+void reset_matrix(double matrix[MAX_LEN][MAX_LEN], int n, int m)
+{
+    puts("");
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 2; j < m + 2; j++)
+            matrix[i][j] = 0;
+    }
+}
+
 // Выводит матрицу на экран.
 void print_matrix(FILE *f, double matrix[MAX_LEN][MAX_LEN], int n, int m)
 {
@@ -41,6 +51,8 @@ void print_matrix(FILE *f, double matrix[MAX_LEN][MAX_LEN], int n, int m)
 // И выбирает узлы,близкие к х (кол-во n + 1).
 int find_insert(double matrix[MAX_LEN][MAX_LEN], int row, double x, int index[2], int n)
 {
+    index[0] = 0;
+    index[1] = 0;
     if (n >= row)
     {
         index[0] = 0;
@@ -60,12 +72,12 @@ int find_insert(double matrix[MAX_LEN][MAX_LEN], int row, double x, int index[2]
             // Проверяем, имеем ли мы данный y уже в таблице.
             if (fabs(x - matrix[i][0]) < EPS)
             {
-                printf("y = %lf", matrix[i][1]);
+                printf("y = %lf\n", matrix[i][1]);
                 return FOUND;
             }
             else if (fabs(x - matrix[i + 1][0]) < EPS)
             {
-                printf("y = %lf", matrix[i + 1][1]);
+                printf("y = %lf\n", matrix[i + 1][1]);
                 return FOUND;
             }
             // Если не имеем, то нам нужно, чтобы узлов было (n + 1)
@@ -103,7 +115,7 @@ int find_insert(double matrix[MAX_LEN][MAX_LEN], int row, double x, int index[2]
         }
     }
 
-    printf("Некорректные данные.\n");
+    // printf("Некорректные данные.\n");
     return ERROR_FIND;
 }
 
@@ -132,7 +144,7 @@ void func(double matrix[MAX_LEN][MAX_LEN], int n, int m, int index[2])
 // Строим полином Ньютона и вычисляем при заданном х.
 double Newton_polynomial(double matrix[MAX_LEN][MAX_LEN], int row, int n, int index[2], double x)
 {
-    puts("");
+    // puts("");
     // Результату присваиваем y0. Current - это текущий член суммы.
     double result = matrix[index[0]][1], current = 1;
 
@@ -158,24 +170,29 @@ double Newton_polynomial(double matrix[MAX_LEN][MAX_LEN], int row, int n, int in
     return result;
 }
 
-double f(double x)
+double f(double x, double matrix[MAX_LEN][MAX_LEN], int row, int n, int index[2])
 {
-    return (x - 3) * (x + 3);
+    int err = find_insert(matrix, row, x, index, n);
+    func(matrix, row, n, index);
+    double result = Newton_polynomial(matrix, row, n, index, x);
+    // printf("my: %lf VS %lf\n", result, FUNC(x));
+    return result;
+    // return FUNC(x);
 }
 
-double method_division(double a, double b)
+double method_division(double a, double b, double matrix[MAX_LEN][MAX_LEN], int row, int n, int index[2])
 {
-    if (fabs(f(a)) <= EPS)
+    if (fabs(f(a, matrix, row, n, index)) <= EPS)
     {
-        printf("result = %lf %lf\n", a, f(a));
+        printf("result = %lf %lf\n", a, f(a, matrix, row, n, index));
         return a;
     }
-    else if (fabs(f(b)) <= EPS)
+    else if (fabs(f(b, matrix, row, n, index)) <= EPS)
     {
-        printf("result = %lf %lf\n", b, f(b));
+        printf("result = %lf %lf\n", b, f(b, matrix, row, n, index));
         return b;
     }
-    if (f(a) * f(b) > 0)
+    if (f(a, matrix, row, n, index) * f(b, matrix, row, n, index) > 0)
     {
         printf("Нет корня\n");
         return 0;
@@ -190,7 +207,7 @@ double method_division(double a, double b)
 
     while (fabs(a - b) >= EPS)
     {
-        if (f(a) * f(c) <= 0)
+        if (f(a, matrix, row, n, index) * f(c, matrix, row, n, index) <= 0)
             b = c;
         else
             a = c;
@@ -199,7 +216,7 @@ double method_division(double a, double b)
     }
 
     x = (a + b) / 2;
-    printf("result = %lf %lf\n", x, f(x));
+    printf("result = %lf %lf\n", x, f(x, matrix, row, n, index));
 
     return x;
 }

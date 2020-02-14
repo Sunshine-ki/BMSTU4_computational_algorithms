@@ -3,9 +3,9 @@
 
 #include "headers/define.h"
 
-#define START -1
-#define STOP 1
-#define STEP 0.25
+#define START -4
+#define STOP 0
+#define STEP 0.30
 
 void fill_file()
 {

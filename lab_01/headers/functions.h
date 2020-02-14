@@ -7,9 +7,11 @@
 
 #include "define.h"
 
-double f(double x);
+double f(double x, double matrix[MAX_LEN][MAX_LEN], int row, int n, int index[2]);
 
-double method_division(double a, double b);
+double method_division(double a, double b, double matrix[MAX_LEN][MAX_LEN], int row, int n, int index[2]);
+
+void reset_matrix(double matrix[MAX_LEN][MAX_LEN], int n, int m);
 
 int fill_matrix(FILE *f, double matrix[MAX_LEN][MAX_LEN], int n);
 
