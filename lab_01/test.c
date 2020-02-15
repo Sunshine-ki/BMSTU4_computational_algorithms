@@ -3,10 +3,6 @@
 
 #include "headers/define.h"
 
-#define START -4
-#define STOP 0
-#define STEP 0.30
-
 void fill_file()
 {
     FILE *f = fopen("table/test.txt", "w");

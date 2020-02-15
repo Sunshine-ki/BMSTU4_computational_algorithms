@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "functions.h"
+#include "matrix_func.h"
 #include "define.h"
 #include "colors.h"
 
@@ -8,8 +9,8 @@
 // table2 - y = cos(pi/2x) (Из лекции).
 // table3 - cos(x)
 // table4 - cos(x) reverse.
-// table5 - y = i * i + 8 * i + 12; (-2 и -6)
-// table5 - y = i * i + 8 * i + 12; (-2 и -6) (reverse (y x))
+// table5 - cos(x) // Для метода половинного деления.
+// table6 - x - 7 (4, 9, 0.35) (x и y местами поменялись). (Обратная интерполяция)
 int main(int argc, char *argv[])
 {
     FILE *f = fopen(argv[1], MODE_READ);
@@ -22,14 +23,14 @@ int main(int argc, char *argv[])
     int rc = scanf("%d", &n);
     if (!rc)
     {
-        printf("Некорректный ввод.");
+        printf("Некорректный ввод.\n");
         return ERROR_INPUT;
     }
     printf("Введите x: ");
     rc = scanf("%lf", &x);
     if (!rc)
     {
-        printf("Некорректный ввод.");
+        printf("Некорректный ввод.\n");
         return ERROR_INPUT;
     }
     white();
@@ -38,9 +39,17 @@ int main(int argc, char *argv[])
     int err = find_insert(matrix, row, x, index, n);
 
     if (err == FOUND)
+    {
+        red();
+        printf("Данный корень имеется в таблице!\n");
+        white();
         return 0;
+    }
     else if (err == ERROR_FIND)
     {
+        red();
+        printf("Не найдено значение.");
+        white();
         return err;
     }
     func(matrix, row, n, index);
@@ -55,11 +64,21 @@ int main(int argc, char *argv[])
 
     // print_matrix(stdout, matrix, row, n);
 
+    int answer;
+    yellow();
+    printf("Желаете найти корень методом половинного деления? (1 - Да / 0 - Нет) ");
+    scanf("%d", &answer);
+    if (!answer)
+        return OK;
+
+    // Метод половинного деления
+    green();
     double a, b;
     printf("Введите a и b: ");
     scanf("%lf %lf", &a, &b);
     double res = method_division(a, b, matrix, row, n, index);
 
+    white();
     fclose(f);
     return OK;
 }

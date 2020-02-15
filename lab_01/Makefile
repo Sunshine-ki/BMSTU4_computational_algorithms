@@ -1,5 +1,5 @@
 CFLAGS := -std=c99 -lm
-FILE_O :=  bin/main.o bin/functions.o
+FILE_O :=  bin/main.o bin/functions.o bin/matrix_func.o
 HEADERS_DIR := headers/
 
 all: app.exe 
@@ -18,7 +18,7 @@ test: test.c
 	rm -f test
 
 run:
-	./app.exe table/test.txt
+	./app.exe table/table6.txt
 
 clean:
 	rm -f *.o *.exe *.out functions/*.o test -r bin
