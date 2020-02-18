@@ -18,7 +18,7 @@ test: test.c
 	rm -f test
 
 run:
-	./app.exe table/table6.txt
+	./app.exe table/test.txt
 
 clean:
 	rm -f *.o *.exe *.out functions/*.o test -r bin

@@ -6,7 +6,7 @@
 #include "colors.h"
 
 // table - y = x.
-// table2 - y = cos(pi/2x) (Из лекции).
+// table2 - y = cos(pi/2x) (Из лекции). + print(matrix)!!!
 // table3 - cos(x)
 // table4 - cos(x) reverse.
 // table5 - cos(x) // Для метода половинного деления.
@@ -58,11 +58,11 @@ int main(int argc, char *argv[])
 
     green();
     printf("Результат интерполяции: y = %lf\n", result);
-    printf("Результат функции (Реальный) %lf\n", FUNC(x));
-    printf("Погрешность: %lf\n", fabs(result - FUNC(x)));
+    // printf("Результат функции (Реальный) %lf\n", FUNC(x));
+    // printf("Погрешность: %lf\n", fabs(result - FUNC(x)));
     white();
 
-    // print_matrix(stdout, matrix, row, n);
+    print_matrix(stdout, matrix, row, n);
 
     int answer;
     yellow();

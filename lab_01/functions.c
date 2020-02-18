@@ -145,7 +145,7 @@ double method_division(double a, double b, double matrix[MAX_LEN][MAX_LEN], int 
 
     double x, c = (a + b) / 2.0;
 
-    while (fabs(a - b) >= EPS)
+    while (fabs(a - b) >= fabs(c) * EPS + EPS)
     {
         if (f(a, matrix, row, n, index) * f(c, matrix, row, n, index) <= 0)
             b = c;

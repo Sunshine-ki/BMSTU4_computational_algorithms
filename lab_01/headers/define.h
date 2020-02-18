@@ -12,14 +12,16 @@
 #define ERROR_FIND -1
 #define ERROR_INPUT -2
 
-#define START 0
-#define STOP 2
+#define START -0.25
+#define STOP 1.5
 #define STEP 0.25
 
 // Функции.
+#define FUNC(x) (cos(x) - x)
 // #define FUNC(x) x;
+// #define FUNC(x) (x * x)
 // #define FUNC(x) cos(PI / 2 * x)
 // #define FUNC(x) cos(x)
-#define FUNC(x) ((double)(x - 7))
+// #define FUNC(x) ((double)(x - 7))
 
 #endif
