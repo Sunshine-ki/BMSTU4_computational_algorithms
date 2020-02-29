@@ -1,5 +1,6 @@
-#include "headers/functions.h"
+#include "functions.h"
 #include "matrix_func.h"
+#include "colors.h"
 
 // Функция ищет (по заданному х ) интервал, в который попадает х
 // И записваеь индексы узлов (близкиких к х (кол-во n + 1)) в index .
@@ -9,7 +10,7 @@ int find_insert(double matrix[MAX_LEN][MAX_LEN], int row, double x, int index[2]
     index[1] = 0;
     if (n >= row)
     {
-        index[0] = 0;
+        index[0] = 1;
         index[1] = row - 1;
         return OK;
     }
@@ -18,7 +19,7 @@ int find_insert(double matrix[MAX_LEN][MAX_LEN], int row, double x, int index[2]
     int a, b, k;
 
     // Начинаем цикл по первому ряду(там записаны х-ы).
-    for (int i = 0; i < row - 1; i++)
+    for (int i = 1; i < row - 1; i++)
     {
         // Ищем интервал, в который попадает х.
         if (matrix[i][0] <= x && x <= matrix[i + 1][0] || matrix[i][0] >= x && x >= matrix[i + 1][0])
@@ -48,10 +49,10 @@ int find_insert(double matrix[MAX_LEN][MAX_LEN], int row, double x, int index[2]
             // (Такого быть не может, птому что в матрице индексация больше 0),
             // То нижняя граница становится равная 0,
             // А верхней прибавляется то значение, которое не влезло в нижний интервал.
-            if (index[0] < 0)
+            if (index[0] <= 0)
             {
                 index[1] += -1 * index[0];
-                index[0] = 0;
+                index[0] = 1;
             }
             // Еслиже иначе, у нас интервал вышел за пределы
             // (Стал больше, чем у нас имеется значений),
@@ -59,7 +60,7 @@ int find_insert(double matrix[MAX_LEN][MAX_LEN], int row, double x, int index[2]
             // (То есть кол-во рядов), а к нижней прибавляем то, что не влезло в верхнюю.
             else if (index[1] >= row)
             {
-                index[0] -= index[1] - (row - 1);
+                index[0] -= index[1] - (row);
                 index[1] = row - 1;
             }
             return OK;
@@ -70,7 +71,7 @@ int find_insert(double matrix[MAX_LEN][MAX_LEN], int row, double x, int index[2]
 }
 
 // Функция вычисляет оставшиеся столбы (Т.е. находит коэффициенты)
-void func(double matrix[MAX_LEN][MAX_LEN], int n, int m, int index[2])
+void func(double matrix[MAX_LEN][MAX_LEN], int m, int index[2])
 {
     // m - Это степень полинома. Столбцов в матрице m + 2.
     // Т.к. 2-а первых столбца это x и y.
@@ -90,7 +91,7 @@ void func(double matrix[MAX_LEN][MAX_LEN], int n, int m, int index[2])
 }
 
 // Строим полином Ньютона и вычисляем при заданном х.
-double Newton_polynomial(double matrix[MAX_LEN][MAX_LEN], int row, int n, int index[2], double x)
+double newton_polynomial(double matrix[MAX_LEN][MAX_LEN], int n, int index[2], double x)
 {
     // puts("");
     // Результату присваиваем y0. Current - это текущий член суммы.
@@ -114,48 +115,94 @@ double Newton_polynomial(double matrix[MAX_LEN][MAX_LEN], int row, int n, int in
 double f(double x, double matrix[MAX_LEN][MAX_LEN], int row, int n, int index[2])
 {
     int err = find_insert(matrix, row, x, index, n);
-    func(matrix, row, n, index);
-    double result = Newton_polynomial(matrix, row, n, index, x);
+    func(matrix, n, index);
+    double result = newton_polynomial(matrix, n, index, x);
+
+    printf("RES = %f", result);
+    return result;
+}
+
+double bilinear_interpolation(double matrix[MAX_LEN][MAX_LEN], int size, double x, double y, int nx, int ny)
+{
+    int index_x[2], index_y[2];
+    double result;
+    double current_matrix[MAX_LEN][MAX_LEN];
+    int size_current = 0;
+
+    int err = find_insert(matrix, size, x, index_x, nx);
+    if (err == FOUND)
+    {
+        printf("Данный корень имеется в таблице\n");
+        return ERROR;
+    }
+    else if (err == ERROR_FIND)
+    {
+        printf("Корень не найден\n");
+        return ERROR;
+    }
+
+    err = find_insert(matrix, size, y, index_y, ny);
+    if (err == FOUND)
+    {
+        printf("Данный корень имеется в таблице\n");
+        return ERROR;
+    }
+    else if (err == ERROR_FIND)
+    {
+        printf("Корень не найден\n");
+        return ERROR;
+    }
+
+    size_current = index_y[1] - index_y[0] + 1;
+
+    printf("\nindex (for x)= %d %d\n", index_x[0], index_x[1]);
+    printf("index (for y)= %d %d\n", index_y[0], index_y[1]);
+
+    printf("size_current (for y)= %d\n\n", size_current);
+
+    for (int i = index_y[0], k = 0; i <= index_y[1]; i++, k++)
+    {
+        current_matrix[k][0] = matrix[i][0];
+        current_matrix[k][1] = matrix[i][index_x[0]];
+    }
+
+    int index_test[2];
+    f(x, current_matrix, ny, size_current, index_test);
+    // func(current_matrix, ny, index_test);
+
+    // //
+    printf("\n");
+    for (int i = 0; i < size_current; i++)
+    {
+        for (int j = 0; j < ny + 1; j++)
+            printf("%-10lf ", current_matrix[i][j]);
+        printf("\n");
+    }
 
     return result;
 }
 
-double method_division(double a, double b, double matrix[MAX_LEN][MAX_LEN], int row, int n, int index[2])
-{
-    if (fabs(f(a, matrix, row, n, index)) <= EPS)
-    {
-        printf("result = %lf %lf\n", a, f(a, matrix, row, n, index));
-        return a;
-    }
-    else if (fabs(f(b, matrix, row, n, index)) <= EPS)
-    {
-        printf("result = %lf %lf\n", b, f(b, matrix, row, n, index));
-        return b;
-    }
-    if (f(a, matrix, row, n, index) * f(b, matrix, row, n, index) > 0)
-    {
-        printf("Нет корня\n");
-        return 0;
-    }
-    else if (fabs(a - b) < EPS)
-    {
-        printf("Не верные а и b\n");
-        return 0;
-    }
+// for (int i = index_y[0], k = 0; i <= index_y[1]; i++, k++)
+// {
+//     current_matrix[k][0] = matrix[i][0];
+// }
 
-    double x, c = (a + b) / 2.0;
+// int index_test[] = {0, 4};
 
-    while (fabs(a - b) >= fabs(c) * EPS + EPS)
-    {
-        if (f(a, matrix, row, n, index) * f(c, matrix, row, n, index) <= 0)
-            b = c;
-        else
-            a = c;
+// for (int j = index_x[0]; j <= index_x[1]; j++)
+// {
+//     for (int i = index_y[0], k = 0; i <= index_y[1]; i++, k++)
+//     {
+//         current_matrix[k][1] = matrix[i][j];
+//     }
+//     func(current_matrix, ny, index_test);
+//     printf("res = %lf \n", newton_polynomial(current_matrix, size_current, index_test, x));
 
-        c = (a + b) / 2.0;
-    }
-
-    x = (a + b) / 2;
-    printf("result = %lf\n", x); //, f(x, matrix, row, n, index));
-    return x;
-}
+//     for (int i = 0; i < size_current; i++)
+//     {
+//         for (int j = 0; j < ny + 1; j++)
+//             printf("%-10lf ", current_matrix[i][j]);
+//         printf("\n");
+//     }
+//     printf("\n\n");
+// }
