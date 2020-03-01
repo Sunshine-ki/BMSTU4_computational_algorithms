@@ -132,24 +132,24 @@ double bilinear_interpolation(double matrix[MAX_LEN][MAX_LEN], int size, double 
     int err = find_insert(matrix, size, x, index_x, nx);
     if (err == FOUND)
     {
-        printf("Данный корень имеется в таблице\n");
+        printf("Данное значение имеется в таблице\n");
         return ERROR;
     }
     else if (err == ERROR_FIND)
     {
-        printf("Корень не найден\n");
+        printf("Значение не найдено\n");
         return ERROR;
     }
 
     err = find_insert(matrix, size, y, index_y, ny);
     if (err == FOUND)
     {
-        printf("Данный корень имеется в таблице\n");
+        printf("Данное значение имеется в таблице\n");
         return ERROR;
     }
     else if (err == ERROR_FIND)
     {
-        printf("Корень не найден\n");
+        printf("Значение не найдено\n");
         return ERROR;
     }
 
