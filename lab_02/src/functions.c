@@ -168,7 +168,7 @@ double bilinear_interpolation(double matrix[MAX_LEN][MAX_LEN], int size, double 
             current_matrix[k][0] = matrix[i][0];
             current_matrix[k][1] = matrix[i][j];
         }
-        matrix_x[t][0] = j;
+        matrix_x[t][0] = matrix[j][0];
         matrix_x[t][1] = f(x, current_matrix, ny, size_current, index_current);
     }
     size_current = index_x[1] - index_x[0] + 1;

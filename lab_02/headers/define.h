@@ -14,8 +14,8 @@
 #define ERROR_INPUT -2
 
 #define START 1
-#define STOP 7
-#define STEP 1
+#define STOP 4
+#define STEP 1.5
 
 // Функции.
 #define FUNC(x, y) (x + y)
