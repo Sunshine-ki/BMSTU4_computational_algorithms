@@ -18,7 +18,7 @@ test: src/test.c
 	./bin/test.out
 
 run:
-	./app.exe table/test.txt
+	./app.exe table/table2.txt
 
 clean:
 	rm -f *.o *.exe *.out -r bin

@@ -5,6 +5,8 @@
 #include "define.h"
 #include "colors.h"
 
+// table = (3, 7, 1) (x + y)
+// table2 = (-3, 4, 1.5) (x*x + y*y)
 int main(int argc, char *argv[])
 {
     FILE *f = fopen(argv[1], MODE_READ);
@@ -31,7 +33,7 @@ int main(int argc, char *argv[])
 
     bilinear_interpolation(matrix, size_matrix, x, y, nx, ny);
 
-    print_matrix(stdout, matrix, size_matrix, size_matrix);
+    // print_matrix(stdout, matrix, size_matrix, size_matrix);
 
     white();
     fclose(f);
