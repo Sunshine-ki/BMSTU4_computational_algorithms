@@ -76,12 +76,15 @@ void func(double matrix[MAX_LEN][MAX_LEN], int m, int index[2])
     // m - Это степень полинома. Столбцов в матрице m + 2.
     // Т.к. 2-а первых столбца это x и y.
     m += 2;
+    printf("Index : %d and %d", index[0], index[1]);
 
     for (int j = 2, k = 1; j < m; j++, k++)
     {
-        for (int i = index[0]; i < index[1]; i++)
+        for (int i = index[0]; i < index[1] - 1; i++)
         {
             // Вычисляем значения, по формуле разделённой разности.
+            // printf("( %lf - %lf ) / ( %lf - %lf ) = %lf\n", matrix[i][j - 1], matrix[i + 1][j - 1], matrix[i][0], matrix[i + k][0],
+            //    ((matrix[i][j - 1] - matrix[i + 1][j - 1]) / (matrix[i][0] - matrix[i + k][0])));
             matrix[i][j] = (matrix[i][j - 1] - matrix[i + 1][j - 1]) / (matrix[i][0] - matrix[i + k][0]);
         }
         // Сужаем нижнюю границу, т.к. мы вычисляем через разность двух элементов,
@@ -114,7 +117,8 @@ double newton_polynomial(double matrix[MAX_LEN][MAX_LEN], int n, int index[2], d
 
 double f(double x, double matrix[MAX_LEN][MAX_LEN], int row, int n, int index[2])
 {
-    int err = find_insert(matrix, row, x, index, n);
+    // int err = find_insert(matrix, row, x, index, n);
+    printf("f args = %lf %d %d\n", x, row, n);
     func(matrix, n, index);
     double result = newton_polynomial(matrix, n, index, x);
 
@@ -122,12 +126,25 @@ double f(double x, double matrix[MAX_LEN][MAX_LEN], int row, int n, int index[2]
     return result;
 }
 
+void print_matri(double current_matrix[MAX_LEN][MAX_LEN], int size_current, int ny)
+{
+    // //
+    printf("\n");
+    for (int i = 0; i < size_current; i++)
+    {
+        for (int j = 0; j < ny + 1; j++)
+            printf("%-10lf ", current_matrix[i][j]);
+        printf("\n");
+    }
+}
+
 double bilinear_interpolation(double matrix[MAX_LEN][MAX_LEN], int size, double x, double y, int nx, int ny)
 {
     int index_x[2], index_y[2];
     double result;
-    double current_matrix[MAX_LEN][MAX_LEN];
+    double current_matrix[MAX_LEN][MAX_LEN], matrix_x[MAX_LEN][MAX_LEN];
     int size_current = 0;
+    int index_current[2];
 
     int err = find_insert(matrix, size, x, index_x, nx);
     if (err == FOUND)
@@ -160,24 +177,31 @@ double bilinear_interpolation(double matrix[MAX_LEN][MAX_LEN], int size, double 
 
     printf("size_current (for y)= %d\n\n", size_current);
 
-    for (int i = index_y[0], k = 0; i <= index_y[1]; i++, k++)
+    for (int j = index_x[0], t = 0; j <= index_x[1]; j++, t++)
     {
-        current_matrix[k][0] = matrix[i][0];
-        current_matrix[k][1] = matrix[i][index_x[0]];
+        index_current[0] = 0;
+        index_current[1] = size_current;
+        for (int i = index_y[0], k = 0; i <= index_y[1]; i++, k++)
+        {
+            current_matrix[k][0] = matrix[i][0];
+            current_matrix[k][1] = matrix[i][j];
+        }
+        // printf("A %d\n", j);
+        matrix_x[t][0] = j;
+        matrix_x[t][1] = f(x, current_matrix, ny, size_current, index_current);
+        // print_matri(current_matrix, size_current, ny);
     }
+    // size_current = index_x[1] - index_x[0] + 1;
+    // index_current[0] = 0;
+    // index_current[1] = size_current;
+    // printf("\nNX = %d\n", nx);
+    // result = f(y, matrix_x, nx, size_current, index_current);
+    print_matri(matrix_x, size_current, ny);
 
-    int index_test[2];
-    f(x, current_matrix, ny, size_current, index_test);
-    // func(current_matrix, ny, index_test);
+    printf("\nAAAAAAA = %lf\n", result);
 
-    // //
-    printf("\n");
-    for (int i = 0; i < size_current; i++)
-    {
-        for (int j = 0; j < ny + 1; j++)
-            printf("%-10lf ", current_matrix[i][j]);
-        printf("\n");
-    }
+    // f(x, current_matrix, ny, size_current, index_current);
+    // // func(current_matrix, ny, index_current);
 
     return result;
 }
@@ -187,7 +211,7 @@ double bilinear_interpolation(double matrix[MAX_LEN][MAX_LEN], int size, double 
 //     current_matrix[k][0] = matrix[i][0];
 // }
 
-// int index_test[] = {0, 4};
+// int index_current[] = {0, 4};
 
 // for (int j = index_x[0]; j <= index_x[1]; j++)
 // {
@@ -195,8 +219,8 @@ double bilinear_interpolation(double matrix[MAX_LEN][MAX_LEN], int size, double 
 //     {
 //         current_matrix[k][1] = matrix[i][j];
 //     }
-//     func(current_matrix, ny, index_test);
-//     printf("res = %lf \n", newton_polynomial(current_matrix, size_current, index_test, x));
+//     func(current_matrix, ny, index_current);
+//     printf("res = %lf \n", newton_polynomial(current_matrix, size_current, index_current, x));
 
 //     for (int i = 0; i < size_current; i++)
 //     {

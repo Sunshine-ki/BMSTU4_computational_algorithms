@@ -7,6 +7,10 @@
 
 #include "define.h"
 
+//
+void print_matri(double current_matrix[MAX_LEN][MAX_LEN], int size_current, int ny);
+//
+
 double bilinear_interpolation(double matrix[MAX_LEN][MAX_LEN], int size, double x, double y, int nx, int ny);
 
 double newton_polynomial(double matrix[MAX_LEN][MAX_LEN], int n, int index[2], double x);
