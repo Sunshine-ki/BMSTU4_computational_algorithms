@@ -13,12 +13,12 @@
 #define ERROR_FIND -1
 #define ERROR_INPUT -2
 
-#define START 1
+#define START -3
 #define STOP 4
 #define STEP 1.5
 
 // Функции.
-#define FUNC(x, y) (x + y)
+#define FUNC(x, y) (x * x + y * y)
 // #define FUNC(x, y) (x * x + y * y)
 
 #endif
