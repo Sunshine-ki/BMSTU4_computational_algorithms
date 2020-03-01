@@ -9,12 +9,12 @@ void fill_file()
 
     fprintf(f, "%d\n%-10d ", (int)fabs(((STOP - START) / STEP + 1)), 0);
 
-    for (int i = START; i <= STOP; i += STEP)
-        fprintf(f, "%-10d ", i);
+    for (double i = START; i <= STOP; i += STEP)
+        fprintf(f, "%-10f ", i);
 
     for (double i = START; i <= STOP; i += STEP)
     {
-        fprintf(f, "\n%-10d ", (int)i);
+        fprintf(f, "\n%-10f ", i);
         for (double j = START; j <= STOP; j += STEP)
 
             fprintf(f, "%-10f ", FUNC(i, j));

@@ -155,10 +155,10 @@ double bilinear_interpolation(double matrix[MAX_LEN][MAX_LEN], int size, double 
 
     size_current = index_y[1] - index_y[0] + 1;
 
-    // printf("\nindex (for x)= %d %d\n", index_x[0], index_x[1]);
-    // printf("index (for y)= %d %d\n", index_y[0], index_y[1]);
+    printf("\nindex (for x)= %d %d\n", index_x[0], index_x[1]);
+    printf("index (for y)= %d %d\n", index_y[0], index_y[1]);
 
-    // printf("size_current (for y)= %d\n\n", size_current);
+    printf("size_current (for y)= %d\n\n", size_current);
 
     for (int j = index_x[0], t = 0; j <= index_x[1]; j++, t++)
     {
@@ -168,7 +168,7 @@ double bilinear_interpolation(double matrix[MAX_LEN][MAX_LEN], int size, double 
             current_matrix[k][0] = matrix[i][0];
             current_matrix[k][1] = matrix[i][j];
         }
-        matrix_x[t][0] = j - 1;
+        matrix_x[t][0] = j;
         matrix_x[t][1] = f(x, current_matrix, ny, size_current, index_current);
     }
     size_current = index_x[1] - index_x[0] + 1;
@@ -176,6 +176,9 @@ double bilinear_interpolation(double matrix[MAX_LEN][MAX_LEN], int size, double 
     result = f(y, matrix_x, size_current, nx, index_current);
 
     printf("RESULT = %lf", result);
+    printf("\nMATRIX_X:\n");
+    print_matrix(stdout, matrix_x, size, size);
+    printf("\n");
 
     return result;
 }

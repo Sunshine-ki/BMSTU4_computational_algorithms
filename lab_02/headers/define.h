@@ -13,8 +13,8 @@
 #define ERROR_FIND -1
 #define ERROR_INPUT -2
 
-#define START 0
-#define STOP 3
+#define START 1
+#define STOP 7
 #define STEP 1
 
 // Функции.

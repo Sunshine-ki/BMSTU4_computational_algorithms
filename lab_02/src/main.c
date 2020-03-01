@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
     bilinear_interpolation(matrix, size_matrix, x, y, nx, ny);
 
-    // print_matrix(stdout, matrix, size_matrix, size_matrix);
+    print_matrix(stdout, matrix, size_matrix, size_matrix);
 
     white();
     fclose(f);

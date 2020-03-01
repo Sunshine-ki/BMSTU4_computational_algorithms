@@ -37,7 +37,7 @@ void reset_matrix(double matrix[MAX_LEN][MAX_LEN], int n, int m)
 // Выводит матрицу на экран.
 void print_matrix(FILE *f, double matrix[MAX_LEN][MAX_LEN], int n, int m)
 {
-    fprintf(f, " ");
+    fprintf(f, "\n");
     for (int i = 0; i < n; i++)
     {
         for (int j = 0; j < m; j++)
