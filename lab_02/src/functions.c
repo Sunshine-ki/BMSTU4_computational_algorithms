@@ -83,8 +83,8 @@ void func(double matrix[MAX_LEN][MAX_LEN], int m, int index[2])
         for (int i = index[0]; i < index[1] - 1; i++)
         {
             // Вычисляем значения, по формуле разделённой разности.
-            // printf("( %lf - %lf ) / ( %lf - %lf ) = %lf\n", matrix[i][j - 1], matrix[i + 1][j - 1], matrix[i][0], matrix[i + k][0],
-            //    ((matrix[i][j - 1] - matrix[i + 1][j - 1]) / (matrix[i][0] - matrix[i + k][0])));
+            printf("( %lf - %lf ) / ( %lf - %lf ) = %lf\n", matrix[i][j - 1], matrix[i + 1][j - 1], matrix[i][0], matrix[i + k][0],
+                   ((matrix[i][j - 1] - matrix[i + 1][j - 1]) / (matrix[i][0] - matrix[i + k][0])));
             matrix[i][j] = (matrix[i][j - 1] - matrix[i + 1][j - 1]) / (matrix[i][0] - matrix[i + k][0]);
         }
         // Сужаем нижнюю границу, т.к. мы вычисляем через разность двух элементов,
@@ -99,6 +99,7 @@ double newton_polynomial(double matrix[MAX_LEN][MAX_LEN], int n, int index[2], d
     // puts("");
     // Результату присваиваем y0. Current - это текущий член суммы.
     double result = matrix[index[0]][1], current = 1;
+    printf("\n\n RES IN FUNC = %lf\n\n", result);
 
     for (int i = 0; i < n; i++)
     {
@@ -110,6 +111,7 @@ double newton_polynomial(double matrix[MAX_LEN][MAX_LEN], int n, int index[2], d
 
         // Результату каждый раз прибавляется current и y(x0, ... , xi).
         result += current * matrix[index[0]][i + 2];
+        printf("RES IN FUNC = %lf\n", result);
     }
 
     return result;
@@ -118,7 +120,6 @@ double newton_polynomial(double matrix[MAX_LEN][MAX_LEN], int n, int index[2], d
 double f(double x, double matrix[MAX_LEN][MAX_LEN], int row, int n, int index[2])
 {
     // int err = find_insert(matrix, row, x, index, n);
-    printf("f args = %lf %d %d\n", x, row, n);
     func(matrix, n, index);
     double result = newton_polynomial(matrix, n, index, x);
 
@@ -187,18 +188,16 @@ double bilinear_interpolation(double matrix[MAX_LEN][MAX_LEN], int size, double 
             current_matrix[k][1] = matrix[i][j];
         }
         // printf("A %d\n", j);
-        matrix_x[t][0] = j;
+        matrix_x[t][0] = j - 1;
         matrix_x[t][1] = f(x, current_matrix, ny, size_current, index_current);
         // print_matri(current_matrix, size_current, ny);
     }
-    // size_current = index_x[1] - index_x[0] + 1;
-    // index_current[0] = 0;
-    // index_current[1] = size_current;
-    // printf("\nNX = %d\n", nx);
-    // result = f(y, matrix_x, nx, size_current, index_current);
-    print_matri(matrix_x, size_current, ny);
-
-    printf("\nAAAAAAA = %lf\n", result);
+    size_current = index_x[1] - index_x[0] + 1;
+    index_current[0] = 0;
+    index_current[1] = size_current;
+    result = f(y, matrix_x, size_current, nx, index_current);
+    print_matri(matrix_x, size_current, nx + 2);
+    printf("AAAAAAA = %lf", result);
 
     // f(x, current_matrix, ny, size_current, index_current);
     // // func(current_matrix, ny, index_current);
