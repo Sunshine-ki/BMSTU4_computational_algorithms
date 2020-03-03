@@ -7,6 +7,7 @@
 
 // table = (3, 7, 1) (x + y)
 // table2 = (-3, 4, 1.5) (x*x + y*y)
+// table3 = (-1, 1, 0.25) (sin(x) + cos(y))
 int main(int argc, char *argv[])
 {
     FILE *f = fopen(argv[1], MODE_READ);

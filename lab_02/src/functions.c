@@ -175,7 +175,9 @@ double bilinear_interpolation(double matrix[MAX_LEN][MAX_LEN], int size, double 
     index_current[1] = size_current;
     result = f(y, matrix_x, size_current, nx, index_current);
 
-    printf("RESULT = %lf", result);
+    printf("Результат = %lf\n", result);
+    // printf("Руальный результат: %lf\n", FUNC(x, y));
+
     // printf("\nMATRIX_X:\n");
     // print_matrix(stdout, matrix_x, size, size);
     // printf("\n");
