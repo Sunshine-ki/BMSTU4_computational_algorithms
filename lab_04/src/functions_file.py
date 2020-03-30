@@ -1,4 +1,5 @@
 import numpy as np
+
 FILE_NAME = "../table/table2.txt"
 
 
@@ -13,5 +14,5 @@ def read_file():
         y.append(float(line[1]))
         ro.append(float(line[2]))
 
-    # print(x, y, ro)
+    f.close()
     return np.array(x), np.array(y), np.array(ro)

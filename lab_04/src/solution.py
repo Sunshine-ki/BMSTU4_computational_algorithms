@@ -13,7 +13,7 @@ def create_list_points(x_start, x_end, coefficients):
     return x, y
 
 
-def root_mean_square(list_x, list_y, n):
+def root_mean_square(list_x, list_y, list_ro, n):
     # Матрица коэффициентов (Т.е. (x^k, x^m))
     matrix = zeros((n + 1, n + 1))
     # Массив значений (То что стоит после равно, т.е. (y, x^k))
@@ -21,10 +21,10 @@ def root_mean_square(list_x, list_y, n):
 
     for i in range(n + 1):
         for j in range(i, n + 1):
-            matrix[i][j] = matrix[j][i] = sum(list_x**(i + j))
+            matrix[i][j] = matrix[j][i] = sum(list_ro * list_x**(i + j))
 
     for i in range(n + 1):
-        list_value[i] = sum(list_y * list_x**i)
+        list_value[i] = sum(list_ro * list_y * list_x**i)
 
     # Возвращаем коэффициенты полинома (ak).
     return linalg.solve(matrix, list_value)
