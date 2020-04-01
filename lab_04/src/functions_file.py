@@ -1,6 +1,6 @@
 import numpy as np
 
-FILE_NAME = "../table/table2.txt"
+FILE_NAME = "../table/table3.txt"
 
 
 def read_file():
